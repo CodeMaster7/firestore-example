@@ -3,6 +3,22 @@ const form = document.querySelector('form')
 const button = document.querySelector('button')
 const input = document.querySelector('input')
 
+// Initialize Firebase
+var firebaseConfig = {
+    apiKey: "AIzaSyDgcGiWz4_To9w54S58aBR4MhGOCiXob7g",
+    authDomain: "udemy-modern-javascript-3bef3.firebaseapp.com",
+    databaseURL: "https://udemy-modern-javascript-3bef3.firebaseio.com",
+    projectId: "udemy-modern-javascript-3bef3",
+    storageBucket: "udemy-modern-javascript-3bef3.appspot.com",
+    messagingSenderId: "11023887541",
+    appId: "1:11023887541:web:b97589b0d234acccdf22fc",
+    measurementId: "G-B9MHV4RQVT"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.firestore();
+
 const addRecipe = (recipe, id) => {
     let time = recipe.created_at.toDate()
     let html = `
