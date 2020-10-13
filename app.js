@@ -12,18 +12,27 @@ const addRecipe = (recipe, id) => {
     `
     list.innerHTML += html
 }
-// get documents from firebase
-db.collection('recipes').get().then(snapshot => {
-  // console.log(snapshot);
-  snapshot.docs.forEach(doc => {
-    console.log(doc.data());
-    console.log(doc.id);
 
-    addRecipe(doc.data(), doc.id);
-  });
-}).catch(err => {
-  console.log(err);
-});
+const deleteRecipe = (id) => {
+    const recipes = document.querySelectorAll('li')
+    recipes.forEach(recipe => {
+        if (recipe.getAttribute('data-id') === id) {
+            recipe.remove()
+        }
+    })
+}
+
+// get documents from firebase
+db.collection('recipes').onSnapshot(snapshot => { // everytime there is a change in the database fire the callback fuction and send us that new snapshot
+    snapshot.docChanges().forEach(change => {
+        const doc = change.doc
+        if (change.type === 'added') {
+            addRecipe(doc.data(), doc.id)
+        } else if (change.type === 'removed') {
+            deleteRecipe(doc.id)
+        }
+    })
+})
 
 // add and save documents
 form.addEventListener('submit', (e) => {
