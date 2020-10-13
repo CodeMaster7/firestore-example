@@ -1,3 +1,5 @@
+const db = firebase.firestore();
+
 const list = document.querySelector('ul')
 const form = document.querySelector('form')
 const button = document.querySelector('button')
