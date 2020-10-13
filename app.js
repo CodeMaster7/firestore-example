@@ -1,5 +1,7 @@
 const list = document.querySelector('ul')
 const form = document.querySelector('form')
+const button = document.querySelector('button')
+const input = document.querySelector('input')
 
 const addRecipe = (recipe, id) => {
     let time = recipe.created_at.toDate()
@@ -23,7 +25,8 @@ const deleteRecipe = (id) => {
 }
 
 // get documents from firebase
-db.collection('recipes').onSnapshot(snapshot => { // everytime there is a change in the database fire the callback fuction and send us that new snapshot
+// onSnapshot return a function and stores it in the variable below
+const unsub = db.collection('recipes').onSnapshot(snapshot => { // everytime there is a change in the database fire the callback fuction and send us that new snapshot
     snapshot.docChanges().forEach(change => {
         const doc = change.doc
         if (change.type === 'added') {
@@ -53,6 +56,9 @@ form.addEventListener('submit', (e) => {
     }).catch((err) => {
         console.log(err);
     })
+
+    input.value = ''
+    input.focus()
 })
 
 // deleting data
@@ -64,4 +70,10 @@ list.addEventListener('click', e => {
             console.log('recipe deleted');
         })
     }
+})
+
+// unsub from database changes
+button.addEventListener('click', () => {
+    unsub()
+    console.log('unsubscribed from collection changes');
 })
